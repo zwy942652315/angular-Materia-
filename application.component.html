@@ -1,0 +1,94 @@
+<div class="mat-elevation-z8">
+  <div class="table-lf">
+    <div class="header-top">
+      <h4>Application</h4>
+    </div>
+  </div>
+
+  <div class="table-content" content [hidden]="showZeroState()">
+    <div class="table-loading" kdLoadingSpinner [isLoading]="isLoading"></div>
+    <mat-table [dataSource]="getData()" matSort>
+      <ng-container matColumnDef="statusicon">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let element; let index=index">
+          <mat-icon [ngClass]="getStatus(element).iconClass">
+            <ng-container *ngIf="showHoverIcon(index, element); else showStatus">
+              check_circle
+            </ng-container>
+
+            <ng-template #showStatus>
+              {{getStatus(element).iconName}}
+            </ng-template>
+          </mat-icon>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <a href="javascript:void(0);"
+          (click)="goDetail(element)">
+            {{element.objectMeta.name}}
+          </a>
+        </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="namespace">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Namespace</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.objectMeta.namespace}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="labels">
+        <mat-header-cell *matHeaderCellDef>Labels</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <sym-labels-group [value]='element.objectMeta.labels'></sym-labels-group>
+        </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="replicas">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Replicas</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <a href="javascript:void(0);"
+            *ngIf="element.status && element.status.replicas && element.status.availableReplicas ;else other">
+            {{element.status.availableReplicas}} / {{element.status.replicas}}
+          </a>
+          <ng-template #other>
+            <a href="javascript:void(0);" *ngIf="element.status.replicas && !element.status.availableReplicas">
+              <span class='red'>0</span> / {{element.status.replicas}}
+            </a>
+            <a href="javascript:void(0);" *ngIf="!element.status.replicas && element.status.availableReplicas">
+              {{element.status.availableReplicas}} / <span class='red'>0</span>
+            </a>
+            <a href="javascript:void(0);" class='red'
+              *ngIf="!element.status.replicas && !element.status.availableReplicas">
+              0 / 0
+            </a>
+          </ng-template>
+        </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="creationTimestamp">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Created Time </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.status.creationTimestamp}} </mat-cell>
+      </ng-container>
+  
+      <ng-container *ngFor="let col of getActionColumns()" [matColumnDef]="col.name">
+        <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+        <mat-cell *matCellDef="let element"> 
+          <kd-dynamic-cell [component]="col.component" [resource]="element"></kd-dynamic-cell>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="getColumns()"></mat-header-row>
+      <mat-row #matrow (mouseover)="onRowOver(index)" (mouseleave)="onRowLeave()" (click)="expand(index, row)"
+        [ngClass]="{'kd-no-bottom-border': isRowExpanded(index), 'kd-clickable': hasErrors(row)}"
+        *matRowDef="let row; columns: getColumns(); let index=index"></mat-row>
+    </mat-table>
+
+    <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+
+  <div content [hidden]="!showZeroState()">
+    <kd-list-zero-state></kd-list-zero-state>
+  </div>
+</div>

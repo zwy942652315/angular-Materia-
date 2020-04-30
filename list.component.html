@@ -1,0 +1,9 @@
+<sym-select (freshOuter)="fresh()"  [(cluster)]="cluster"
+[project]="project" (tableFilter)="applyFilter($event)"></sym-select>
+<button  mat-raised-button color="primary"  routerLink="/applications/create" routerLinkActive="active">
+  Create
+</button>
+<button mat-raised-button class="btn-green" [disabled]="!dataTmp.freshdata" (click)="fresh()">
+  Refresh
+</button>
+<sym-application-list #applicationList></sym-application-list>
