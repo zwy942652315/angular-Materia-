@@ -6,7 +6,7 @@
 
 ​	排序、分页、过滤、自定义操作列、列表中根据数据展示相应图标、跳转详情页
 
-![image-20200429235125612](https://github.com/zwy942652315/angular-Materia-list/raw/master/img/table.png)
+![image-20200429235125612](img/table.png)
 
 ​	
 
@@ -42,7 +42,7 @@
 
 application列表组件和基类```ResourceListBase```、```ResourceListWithStatuses``` 关系
 
-![](https://github.com/zwy942652315/angular-Materia-list/raw/master/img/列表数据分析体系.png)
+![](img/列表数据分析体系.png)
 
 application列表组件主要继承父类```ResourceListWithStatuses```，通过重写```ResourceListWithStatuses```的方法，自定义模板，来复用父类的功能属性。
 
@@ -73,19 +73,19 @@ application列表组件主要继承父类```ResourceListWithStatuses```，通过
 
 - 结合```sym-select``` 组件搜索
 
-  ![image-20200430175615525](https://github.com/zwy942652315/angular-Materia-list/raw/master/img/symSelect.png)
+  ![image-20200430175615525](img/symSelect.png)
 
   ```sym-select```组件的namespace下拉列表的数据nsList是异步获取的，如果是选择是的namespace是ALL，那么列表组件要获取到nsList，然后对每个nsList里的namespace进行全部请求。如果选择的是某个namesapce，那么就传入namespace的值，进行单个请求
 
   **这里也是比较疑惑的地方**，之前想通过```@Input```传入属性的方式，来把搜索组件的数据传递给applicaiton列表组件```sym-application-list```
 
-  ![](https://github.com/zwy942652315/angular-Materia-list/raw/master/img/input.png)
+  ![](img/input.png)
 
   但是尝试之后，发现在页面初始化的时候，通过```@Input```的属性传入的```nsList```为空的。如果传入的属性是同步获取的，则可以传递到application列表组件中
 
   最后获取搜索参数的方式，采取**服务依赖注入**的方式来获取。
 
-  ![](https://github.com/zwy942652315/angular-Materia-list/raw/master/img/subscribe.png)
+  ![](img/subscribe.png)
 
 - 通过重写map 方法，在自定义表格的数据，返回所需表格的数据。
 
@@ -187,7 +187,7 @@ this.applicationList.getList();
 
 在基类中已有声明注册操作列的方法，在application列表组件继承该方法，在构造函数中，注册操作列，```MenuComponent```是引入的组件
 
-![image-20200430184244832](https://github.com/zwy942652315/angular-Materia-list/raw/master/img/action.png)
+![image-20200430184244832](img/action.png)
 
 ```
 this.registerActionColumn<MenuComponent>('menu', MenuComponent);
@@ -195,7 +195,7 @@ this.registerActionColumn<MenuComponent>('menu', MenuComponent);
 
 ##### 过滤功能
 
-![image-20200430184348308](https://github.com/zwy942652315/angular-Materia-list/raw/master/img/filter.png)
+![image-20200430184348308](img/filter.png)
 
 这里的Pods列表组件也是继承了```ResourceListWithStatuses```
 
